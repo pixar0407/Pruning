@@ -5,7 +5,9 @@ import torch
 from torch.nn import Parameter
 from torch.nn.modules.module import Module
 import torch.nn.functional as F
-
+"""
+이곳에서 prune 하는 것.
+"""
 class PruningModule(Module):
     def prune_by_percentile(self, q=5.0, **kwargs):
         """
