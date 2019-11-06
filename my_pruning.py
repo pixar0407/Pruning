@@ -26,7 +26,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=1, metavar='N',
+parser.add_argument('--epochs', type=int, default=30, metavar='N',
                     help='number of epochs to train (default: 1)')
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -40,6 +40,8 @@ parser.add_argument('--log', type=str, default='log.txt',
                     help='log file name')
 parser.add_argument('--sensitivity', type=float, default=2,
                     help="sensitivity value that is multiplied to layer's std in order to get threshold value")
+parser.add_argument('--percentile', type=float, default=5,
+                    help="percentile value that is under % value to get threshold value")
 args = parser.parse_args()
 
 # Control Seed
@@ -83,7 +85,7 @@ tfms = transforms.Compose([
     ImgAndDepthToTensor(),
     NormalizeImg(mean, std)
 ])
-ds = NYUDataset('../data/', tfms)
+ds = NYUDataset('/content/gdrive/My Drive/data/', tfms)
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
 # Define which model to use
@@ -147,15 +149,20 @@ train(args.epochs)
 # accuracy = test()
 # util.log(args.log, f"initial_accuracy {accuracy}")
 torch.save(model, f"saves/initial_model.ptmodel")
+torch.save(model.state_dict(), 'all-scales-trained.ckpt')
 print("--- Before pruning ---")
 util.print_nonzeros(model)
 
 # Pruning
-model.prune_by_std(args.sensitivity)
+########################################################################################################################
+############################################################
+############################################################여기서 perentile할 건지, std할건지 정해야 한다.
+########################################################################################################################
+# model.prune_by_percentile(args.percentile)
 # accuracy = test()
 # util.log(args.log, f"accuracy_after_pruning {accuracy}")
-print("--- After pruning ---")
-util.print_nonzeros(model)
+# print("--- After pruning ---")
+# util.print_nonzeros(model)
 
 # Retrain
 # print("--- Retraining ---")
