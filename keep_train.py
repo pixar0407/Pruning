@@ -26,7 +26,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=30, metavar='N',
+parser.add_argument('--epochs', type=int, default=2, metavar='N',
                     help='number of epochs to train (default: 1)')
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -90,14 +90,14 @@ dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
 # Define which model to use
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/all-scales-trained_masked_60e.ckpt', map_location="cpu"))
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/all-scales-trained_masked_90e.ckpt', map_location="cpu"))
 
 # print(model)
 # util.print_model_parameters(model)
 
 # NOTE : `weight_decay` term denotes L2 regularization loss term
-# optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
-optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001)
+optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
+# optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001)
 initial_optimizer_state_dict = optimizer.state_dict()
 
 def train(epochs):
@@ -150,8 +150,8 @@ print("--- Initial training ---")
 train(args.epochs)
 # accuracy = test()
 # util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"saves/initial_model.ptmodel")
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained_masked_90e.ckpt')
+torch.save(model, f"/content/gdrive/My Drive/data/initial_model_masked_92e_from90L1.ptmodel")
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained_masked_92e_from90L1.ckpt')
 print("--- Before pruning ---")
 util.print_nonzeros(model)
 
