@@ -26,7 +26,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=30, metavar='N',
+parser.add_argument('--epochs', type=int, default=5, metavar='N',
                     help='number of epochs to train (default: 1)')
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -95,7 +95,7 @@ print(model)
 util.print_model_parameters(model)
 
 # NOTE : `weight_decay` term denotes L2 regularization loss term
-optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001)
+optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr, weight_decay=0.0001)
 initial_optimizer_state_dict = optimizer.state_dict()
 
 def train(epochs):
