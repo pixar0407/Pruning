@@ -151,7 +151,7 @@ train(args.epochs)
 # accuracy = test()
 # util.log(args.log, f"initial_accuracy {accuracy}")
 torch.save(model, f"saves/initial_model.ptmodel")
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained_masked_60e.ckpt')
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained_masked_90e.ckpt')
 print("--- Before pruning ---")
 util.print_nonzeros(model)
 
