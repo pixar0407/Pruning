@@ -17,6 +17,7 @@ import util
 import model_utils
 from dataset import NYUDataset
 from custom_transforms import *
+import plot_utils
 
 os.makedirs('saves', exist_ok=True)
 
