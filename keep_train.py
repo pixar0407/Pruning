@@ -91,7 +91,7 @@ dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
 # Define which model to use
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/all-scales-trained_masked_92e_from90L1.ckpt', map_location="cpu"))
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/all-scales-trained_masked_92e_from90L1.ckpt', map_location="cpu")) # 경록
 
 # print(model)
 # util.print_model_parameters(model)
@@ -151,7 +151,7 @@ print("--- Initial training ---")
 train(args.epochs)
 # accuracy = test()
 # util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/initial_model_masked_100e_from90L1.ptmodel")
+torch.save(model, f"/content/gdrive/My Drive/data/initial_model_masked_100e_from90L1.ptmodel") # 경록
 torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained_masked_100e_from90L1.ckpt')
 print("--- Before pruning ---")
 util.print_nonzeros(model)

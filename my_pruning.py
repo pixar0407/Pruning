@@ -27,7 +27,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
 parser.add_argument('--epochs', type=int, default=3, metavar='N',
-                    help='number of epochs to train (default: 1)')
+                    help='number of epochs to train (default: 1)')  # 경록
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
 parser.add_argument('--no-cuda', action='store_true', default=False,
@@ -85,8 +85,9 @@ tfms = transforms.Compose([
     ImgAndDepthToTensor(),
     NormalizeImg(mean, std)
 ])
-ds = NYUDataset('/content/gdrive/My Drive/data/', tfms)
+ds = NYUDataset('/content/gdrive/My Drive/data/', tfms) # 경록
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
+
 
 # Define which model to use
 model = Net(mask=True).to(device)
@@ -149,7 +150,7 @@ print("--- Initial training ---")
 train(args.epochs)
 # accuracy = test()
 # util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/all-scales-trained.ptmodel")
+torch.save(model, f"/content/gdrive/My Drive/data/all-scales-trained.ptmodel") # 경록
 torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained.ckpt')
 print("--- Before pruning ---")
 util.print_nonzeros(model)

@@ -72,7 +72,7 @@ model.load_state_dict(torch.load('/content/gdrive/My Drive/data/all-scales-train
 print(model)
 util.print_model_parameters(model)
 
-model.prune_by_percentile(args.sensitivity)
+model.prune_by_std(args.sensitivity)
 # accuracy = test()
 # util.log(args.log, f"accuracy_after_pruning {accuracy}")
 print("--- After pruning ---")
