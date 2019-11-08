@@ -90,7 +90,7 @@ dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
 # Define which model to use
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/all-scales-trained_masked_92e.ckpt', map_location="cpu"))
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/all-scales-trained_masked_92e_from90L1.ckpt', map_location="cpu"))
 
 # print(model)
 # util.print_model_parameters(model)
