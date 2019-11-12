@@ -15,7 +15,20 @@ tfms = transforms.Compose([
     ImgAndDepthToTensor(),
     NormalizeImg(mean, std)
 ])
-ds = NYUDataset('/content/gdrive/My Drive/data/', tfms).__getitem__(1)
+# ds = NYUDataset('/content/gdrive/My Drive/data/', tfms).__getitem__(1)
+ds = NYUDataset('../data/', tfms)
+
+print(f'{ds[0][0].shape} !! {ds[0][1].shape}')
+print(f'{ds[1][0].shape} !! {ds[1][1].shape}')
+plt.imshow(ds[0][0].cpu().numpy().transpose((1, 2, 0)))
+plt.show()
+
+plt.imshow(ds[0][1])
+plt.show()
+
+
 # ds = NYUDataset('../data/', tfms).__getitem__(1)
-plot_image(model_utils.get_unnormalized_ds_item(unnormalize,ds))
-# plot_image(ds)
+# print(f'{ds[1].shape}')
+# # plt.imshow(ds[1].cpu().numpy().transpose((1,2,0)))
+# plt.imshow(ds[1].cpu().numpy())
+# plt.show()

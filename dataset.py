@@ -10,18 +10,15 @@ class NYUDataset(torch.utils.data.Dataset):
         self.data_dir = data_dir
         self.tfms = tfms
 
-        self.ds_v_1 = h5py.File(self.data_dir + 'nyu_depth_data_labeled.mat')
-        self.ds_v_2 = h5py.File(self.data_dir + 'nyu_depth_v2_labeled.mat')
+        self.ds_v_1 = h5py.File(self.data_dir + 'train.mat')
 
-        self.len = len(self.ds_v_1["images"]) + len(self.ds_v_2["images"])
-
+        self.len = len(self.ds_v_1["images"])
+        print(f'{self.len} !!!')
     def __getitem__(self, index):
-        if (index < len(self.ds_v_1["images"])):
-            ds = self.ds_v_1
-            i = index
-        else:
-            ds = self.ds_v_2
-            i = index - len(self.ds_v_1["images"])
+        # index가 size보다 크는 것 예외처리 안하나?
+        ds = self.ds_v_1
+        i = index
+
 
         img = np.transpose(ds["images"][i], axes=[2, 1, 0])
         img = img.astype(np.uint8)

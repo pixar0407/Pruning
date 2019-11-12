@@ -85,7 +85,8 @@ tfms = transforms.Compose([
     ImgAndDepthToTensor(),
     NormalizeImg(mean, std)
 ])
-ds = NYUDataset('/content/gdrive/My Drive/data/', tfms) # 경록
+# ds = NYUDataset('/content/gdrive/My Drive/data/', tfms) # 경록
+ds = NYUDataset('../data/', tfms) # 경록
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
 
