@@ -10,10 +10,11 @@ class NYUDataset(torch.utils.data.Dataset):
         self.data_dir = data_dir
         self.tfms = tfms
 
-        self.ds_v_1 = h5py.File(self.data_dir + 'train.mat')
+        self.ds_v_1 = h5py.File(self.data_dir)
 
         self.len = len(self.ds_v_1["images"])
         print(f'{self.len} !!!')
+
     def __getitem__(self, index):
         # index가 size보다 크는 것 예외처리 안하나?
         ds = self.ds_v_1

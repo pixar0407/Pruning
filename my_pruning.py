@@ -26,7 +26,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=3, metavar='N',
+parser.add_argument('--epochs', type=int, default=2, metavar='N',
                     help='number of epochs to train (default: 1)')  # 경록
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -86,8 +86,12 @@ tfms = transforms.Compose([
     NormalizeImg(mean, std)
 ])
 # ds = NYUDataset('/content/gdrive/My Drive/data/', tfms) # 경록
-ds = NYUDataset('../data/', tfms) # 경록
+ds = NYUDataset('/content/gdrive/My Drive/data/data/train.mat', tfms) # 경록
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
+
+# test loader 준비
+ts = NYUDataset('/content/gdrive/My Drive/data/data/test.mat', tfms)
+tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 
 # Define which model to use
@@ -128,31 +132,27 @@ def train(epochs):
                 pbar.set_description(f'Train Epoch: {epoch} [{done:5}/{len(dl.dataset)} ({percentage:3.0f}%)]  Loss: {loss.item():.6f}')
 
 
-# def test():
-#     model.eval()
-#     test_loss = 0
-#     correct = 0
-#     with torch.no_grad():
-#         for data, target in test_loader:
-#             data, target = data.to(device), target.to(device)
-#             output = model(data)
-#             test_loss += F.nll_loss(output, target, reduction='sum').item() # sum up batch loss
-#             pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
-#             correct += pred.eq(target.data.view_as(pred)).sum().item()
-#
-#         test_loss /= len(test_loader.dataset)
-#         accuracy = 100. * correct / len(test_loader.dataset)
-#         print(f'Test set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(test_loader.dataset)} ({accuracy:.2f}%)')
-#     return accuracy
+def test():
+    model.eval()
+    test_loss = 0
+    with torch.no_grad():
+        for data, target in tl:
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+            test_loss += model_utils.depth_loss(output, target)
+
+        test_loss /= len(tl.dataset)
+        print(f'Test set: Average loss: {test_loss:.4f}')
+    return test_loss
 
 
 # Initial training
 print("--- Initial training ---")
 train(args.epochs)
-# accuracy = test()
-# util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/all-scales-trained.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained.ckpt')
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/all-scales-trained.ptmodel") # 경록
+# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained.ckpt')
 print("--- Before pruning ---")
 util.print_nonzeros(model)
 
