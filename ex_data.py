@@ -15,7 +15,7 @@ tfms = transforms.Compose([
     ImgAndDepthToTensor(),
     NormalizeImg(mean, std)
 ])
-# ds = NYUDataset('/content/gdrive/My Drive/data/', tfms).__getitem__(1)
-ds = NYUDataset('../data/', tfms).__getitem__(1)
+ds = NYUDataset('/content/gdrive/My Drive/data/', tfms).__getitem__(1)
+# ds = NYUDataset('../data/', tfms).__getitem__(1)
 plot_image(model_utils.get_unnormalized_ds_item(unnormalize,ds))
 # plot_image(ds)
