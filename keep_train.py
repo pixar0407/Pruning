@@ -27,7 +27,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=8, metavar='N',
+parser.add_argument('--epochs', type=int, default=10, metavar='N',
                     help='number of epochs to train (default: 1)')
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -86,15 +86,21 @@ tfms = transforms.Compose([
     ImgAndDepthToTensor(),
     NormalizeImg(mean, std)
 ])
-ds = NYUDataset('/content/gdrive/My Drive/data/', tfms)
+
+ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
+
+# test loader 준비
+ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms)
+tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
+
 
 # Define which model to use
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/all-scales-trained_masked_92e_from90L1.ckpt', map_location="cpu")) # 경록
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_30e.ckpt', map_location="cpu")) # 경록
 
-# print(model)
-# util.print_model_parameters(model)
+print(model)
+util.print_model_parameters(model)
 
 # NOTE : `weight_decay` term denotes L2 regularization loss term
 optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
@@ -128,33 +134,33 @@ def train(epochs):
                 pbar.set_description(f'Train Epoch: {epoch} [{done:5}/{len(dl.dataset)} ({percentage:3.0f}%)]  Loss: {loss.item():.6f}')
 
 
-# def test():
-#     model.eval()
-#     test_loss = 0
-#     correct = 0
-#     with torch.no_grad():
-#         for data, target in test_loader:
-#             data, target = data.to(device), target.to(device)
-#             output = model(data)
-#             test_loss += F.nll_loss(output, target, reduction='sum').item() # sum up batch loss
-#             pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
-#             correct += pred.eq(target.data.view_as(pred)).sum().item()
-#
-#         test_loss /= len(test_loader.dataset)
-#         accuracy = 100. * correct / len(test_loader.dataset)
-#         print(f'Test set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(test_loader.dataset)} ({accuracy:.2f}%)')
-#     return accuracy
+def test():
+    model.eval()
+    test_loss = 0
+    test_count = 0
+    with torch.no_grad():
+        print(f'tl length:{len(tl.dataset):.4f}')
+        for data, target in tl:
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+            test_count += 1
+            print(f'test count: {test_count:.4f}')
+            test_loss += model_utils.depth_loss(output, target).item()
+
+        test_loss /= len(tl.dataset)
+        print(f'Test set: Average loss: {test_loss:.4f}')
+    return test_loss
 
 
 # Initial training
 print("--- Initial training ---")
 train(args.epochs)
-# accuracy = test()
-# util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/initial_model_masked_100e_from90L1.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained_masked_100e_from90L1.ckpt')
-print("--- Before pruning ---")
-util.print_nonzeros(model)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+torch.save(model, f"/content/gdrive/My Drive/data/model_L1_40e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_40e.ckpt')
+# print("--- Before pruning ---")
+# util.print_nonzeros(model)
 
 # Pruning
 ########################################################################################################################
