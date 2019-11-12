@@ -26,7 +26,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=2, metavar='N',
+parser.add_argument('--epochs', type=int, default=30, metavar='N',
                     help='number of epochs to train (default: 1)')  # 경록
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -135,11 +135,15 @@ def train(epochs):
 def test():
     model.eval()
     test_loss = 0
+    test_count = 0
     with torch.no_grad():
+        print(f'tl length:{len(tl.dataset):.4f}')
         for data, target in tl:
             data, target = data.to(device), target.to(device)
             output = model(data)
-            test_loss += model_utils.depth_loss(output, target)
+            test_count += 1
+            print(f'test count: {test_count:.4f}')
+            test_loss += model_utils.depth_loss(output, target).item()
 
         test_loss /= len(tl.dataset)
         print(f'Test set: Average loss: {test_loss:.4f}')
@@ -151,10 +155,10 @@ print("--- Initial training ---")
 train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/all-scales-trained.ptmodel") # 경록
-# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/all-scales-trained.ckpt')
-print("--- Before pruning ---")
-util.print_nonzeros(model)
+torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_30e.ckpt')
+# print("--- Before pruning ---")
+# util.print_nonzeros(model)
 
 # Pruning
 ########################################################################################################################
