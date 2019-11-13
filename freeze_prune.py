@@ -125,6 +125,7 @@ def train(epochs):
             for name, p in model.named_parameters():
                 if 'mask' in name:
                     continue
+                print(name,'ohoh')
                 tensor = p.data.cpu().numpy()
                 grad_tensor = p.grad.data.cpu().numpy()
                 grad_tensor = np.where(tensor==0, 0, grad_tensor)
