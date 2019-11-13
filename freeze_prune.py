@@ -85,7 +85,7 @@ tfms = transforms.Compose([
     ImgAndDepthToTensor(),
     NormalizeImg(mean, std)
 ])
-# ds = NYUDataset('/content/gdrive/My Drive/data/', tfms) # 경록
+
 ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
@@ -97,12 +97,13 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 # Define which model to use
 model = Net(mask=True).to(device) # 경록
 
-for name, param in model.named_parameters():
-    if "VGG" in name:
-           param.requires_grad = False
+# for name, param in model.named_parameters():
+#     if "VGG" in name:
+#            param.requires_grad = False
 
 for name, param in model.named_parameters():
     print(name, ':', param.requires_grad)
+
 
 print(model)
 util.print_model_parameters(model)
