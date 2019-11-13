@@ -97,12 +97,9 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 # Define which model to use
 model = Net(mask=True).to(device) # 경록
 
-# for name, param in model.named_parameters():
-#     if "VGG" in name:
-#            param.requires_grad = False
-
 for name, param in model.named_parameters():
-    print(name, ':', param.requires_grad)
+    if "VGG" in name:
+           param.requires_grad = False
 
 
 print(model)
