@@ -90,12 +90,12 @@ ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
 # test loader 준비
-ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms)
+ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms) # 경록
 tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 
 # Define which model to use
-model = Net(mask=True).to(device)
+model = Net(mask=True).to(device) # 경록
 
 print(model)
 util.print_model_parameters(model)
@@ -156,7 +156,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
 torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_30e.ckpt')
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_30e.ckpt') # 경록
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
 

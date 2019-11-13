@@ -91,20 +91,20 @@ ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
 # test loader 준비
-ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms)
+ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms) # 경록
 tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 
 # Define which model to use
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_40e.ckpt', map_location="cpu")) # 경록
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_50e.ckpt', map_location="cpu")) # 경록
 
 print(model)
 util.print_model_parameters(model)
 
 # NOTE : `weight_decay` term denotes L2 regularization loss term
 optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
-# optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001)
+# optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001) # 경록
 initial_optimizer_state_dict = optimizer.state_dict()
 
 def train(epochs):
@@ -157,8 +157,8 @@ print("--- Initial training ---")
 train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/model_L1_50e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_50e.ckpt')
+torch.save(model, f"/content/gdrive/My Drive/data/model_L1_60e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_60e.ckpt')# 경록
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
 
