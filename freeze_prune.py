@@ -86,12 +86,12 @@ tfms = transforms.Compose([
     NormalizeImg(mean, std)
 ])
 
-# ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
-# dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
-#
-# # test loader 준비
-# ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms) # 경록
-# tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
+ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
+dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
+
+# test loader 준비
+ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms) # 경록
+tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 
 # Define which model to use
