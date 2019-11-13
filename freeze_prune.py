@@ -86,12 +86,12 @@ tfms = transforms.Compose([
     NormalizeImg(mean, std)
 ])
 
-ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
-dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
-
-# test loader 준비
-ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms) # 경록
-tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
+# ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
+# dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
+#
+# # test loader 준비
+# ts = NYUDataset('/content/gdrive/My Drive/data/test.mat', tfms) # 경록
+# tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 
 # Define which model to use
@@ -99,6 +99,7 @@ model = Net(mask=True).to(device) # 경록
 
 for name, param in model.named_parameters():
     if "VGG" in name:
+           print(f'ehlsek! {name:20}')
            param.requires_grad = False
 
 
@@ -106,8 +107,8 @@ print(model)
 util.print_model_parameters(model)
 
 # NOTE : `weight_decay` term denotes L2 regularization loss term
-# optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
-optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001)
+optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
+# optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001)
 initial_optimizer_state_dict = optimizer.state_dict()
 
 def train(epochs):
