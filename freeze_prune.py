@@ -126,11 +126,10 @@ def train(epochs):
             for name, p in model.named_parameters():
                 if 'mask' in name:
                     continue
-                if p.grad.data:
-                    tensor = p.data.cpu().numpy()
-                    grad_tensor = p.grad.data.cpu().numpy()
-                    grad_tensor = np.where(tensor==0, 0, grad_tensor)
-                    p.grad.data = torch.from_numpy(grad_tensor).to(device)
+                tensor = p.data.cpu().numpy()
+                grad_tensor = p.grad.data.cpu().numpy()
+                grad_tensor = np.where(tensor==0, 0, grad_tensor)
+                p.grad.data = torch.from_numpy(grad_tensor).to(device)
 
             optimizer.step()
             if batch_idx % args.log_interval == 0:

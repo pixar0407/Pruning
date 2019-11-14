@@ -26,7 +26,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=30, metavar='N',
+parser.add_argument('--epochs', type=int, default=1, metavar='N',
                     help='number of epochs to train (default: 1)')  # 경록
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -97,6 +97,9 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 # Define which model to use
 model = Net(mask=True).to(device) # 경록
 
+for name, param in model.named_parameters():
+    print(name, ':', param.requires_grad)
+
 print(model)
 util.print_model_parameters(model)
 
@@ -155,10 +158,13 @@ print("--- Initial training ---")
 train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_30e.ckpt') # 경록
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_30e.ckpt') # 경록
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
+
+for name, param in model.named_parameters():
+    print(name, ':', param.requires_grad)
 
 # Pruning
 ########################################################################################################################
