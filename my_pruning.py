@@ -26,7 +26,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=1, metavar='N',
+parser.add_argument('--epochs', type=int, default=10, metavar='N',
                     help='number of epochs to train (default: 1)')  # 경록
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -97,15 +97,12 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 # Define which model to use
 model = Net(mask=True).to(device) # 경록
 
-for name, param in model.named_parameters():
-    print(name, ':', param.requires_grad)
-
 print(model)
 util.print_model_parameters(model)
 
 # NOTE : `weight_decay` term denotes L2 regularization loss term
 optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
-# optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001)
+# optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001) #경록
 initial_optimizer_state_dict = optimizer.state_dict()
 
 def train(epochs):
@@ -154,16 +151,42 @@ def test():
 
 
 # Initial training
-print("--- Initial training ---")
-# train(args.epochs)
-# accuracy = test()
-# util.log(args.log, f"initial_accuracy {accuracy}")
+print("---0th  Initial training ---")
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
-# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_30e.ckpt') # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_10e.ckpt') # 경록
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
 
+print("---1th  Initial training ---")
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_20e.ckpt') # 경록
 
+print("---2th  Initial training ---")
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_30e.ckpt') # 경록
+
+print("---3th  Initial training ---")
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_40e.ckpt') # 경록
+
+print("---4th  Initial training ---")
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_50e.ckpt') # 경록
 
 # Pruning
 ########################################################################################################################
