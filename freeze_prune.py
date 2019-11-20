@@ -26,7 +26,7 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=40, metavar='N',
+parser.add_argument('--epochs', type=int, default=1, metavar='N',
                     help='number of epochs to train (default: 1)')  # 경록
 parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
                     help='learning rate (default: 0.01)')
@@ -99,7 +99,6 @@ model = Net(mask=True).to(device) # 경록
 
 for name, param in model.named_parameters():
     if "VGG" in name:
-           print(f'ehlsek! {name:20}')
            param.requires_grad = False
 
 
@@ -124,6 +123,8 @@ def train(epochs):
 
             # zero-out all the gradients corresponding to the pruned connections
             for name, p in model.named_parameters():
+                if 'VGG' in name:
+                    continue
                 if 'mask' in name:
                     continue
                 tensor = p.data.cpu().numpy()
@@ -161,10 +162,13 @@ print("--- Initial training ---")
 train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/model_freeze_L1_40e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_freeze_L1_40e.ckpt') # 경록
+# torch.save(model, f"/content/gdrive/My Drive/data/model_freeze_L1_40e.ptmodel") # 경록
+# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_freeze_L1_40e.ckpt') # 경록
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
+
+for name, param in model.named_parameters():
+    print(name, ':', param.requires_grad)
 
 # Pruning
 ########################################################################################################################

@@ -163,8 +163,7 @@ util.log(args.log, f"initial_accuracy {accuracy}")
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
 
-for name, param in model.named_parameters():
-    print(name, ':', param.requires_grad)
+
 
 # Pruning
 ########################################################################################################################
