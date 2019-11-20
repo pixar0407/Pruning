@@ -153,12 +153,12 @@ def test():
 
 
 # Initial training
-print("--- 0th Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/model_L1_120e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_120e.ckpt')# 경록
+# print("--- 0th Initial training ---")
+# train(args.epochs)
+# accuracy = test()
+# util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_120e.ptmodel") # 경록
+# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_120e.ckpt')# 경록
 #
 # # Initial training
 # print("--- 1th Initial training ---")
@@ -200,12 +200,26 @@ print("--- After pruning ---")
 util.print_nonzeros(model)
 
 # Retrain
-print("--- Retraining ---")
+print("---0th  Retraining ---")
 optimizer.load_state_dict(initial_optimizer_state_dict) # Reset the optimizer
 train(args.epochs)
-torch.save(model, f"saves/model_after_retraining.ptmodel")
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
+torch.save(model, f"/content/gdrive/My Drive/data/model_L1_150e_pr_rt_10.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_150e_pr_rt_10.ckpt')# 경록
 
-print("--- After Retraining ---")
+print("--- 0th After Retraining ---")
 util.print_nonzeros(model)
+
+# Retrain
+print("---1th  Retraining ---")
+optimizer.load_state_dict(initial_optimizer_state_dict) # Reset the optimizer
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"accuracy_after_retraining {accuracy}")
+torch.save(model, f"/content/gdrive/My Drive/data/model_L1_150e_pr_rt_20.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_150e_pr_rt_20.ckpt')# 경록
+
+print("--- 1th After Retraining ---")
+util.print_nonzeros(model)
+
