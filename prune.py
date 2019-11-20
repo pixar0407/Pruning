@@ -39,7 +39,7 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--log', type=str, default='log.txt',
                     help='log file name')
-parser.add_argument('--sensitivity', type=float, default=2,
+parser.add_argument('--sensitivity', type=float, default=1,
                     help="sensitivity value that is multiplied to layer's std in order to get threshold value")
 parser.add_argument('--percentile', type=float, default=85,
                     help="percentile value that is under % value to get threshold value")
@@ -206,8 +206,8 @@ optimizer.load_state_dict(initial_optimizer_state_dict) # Reset the optimizer
 train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/model_L1_150e_pr_std2_rt_1.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_150e_pr_std2_rt_1.ckpt')# 경록
+torch.save(model, f"/content/gdrive/My Drive/data/model_L1_150e_pr_std1_rt_1.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_150e_pr_std1_rt_1.ckpt')# 경록
 
 print("--- 0th After Retraining ---")
 util.print_nonzeros(model)
