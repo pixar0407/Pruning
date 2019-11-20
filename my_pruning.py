@@ -155,9 +155,9 @@ def test():
 
 # Initial training
 print("--- Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
+# train(args.epochs)
+# accuracy = test()
+# util.log(args.log, f"initial_accuracy {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
 # torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_30e.ckpt') # 경록
 # print("--- Before pruning ---")

@@ -5,7 +5,7 @@ from .prune import PruningModule, MaskedLinear
 # Depth Map Prediction 필요
 import torch
 import torch.nn as nn
-from torchvision.models import vgg16
+from torchvision.models import vgg16_bn
 
 # 아래 코드는 우리 적용 대상인 Depth Map Prediction
 class Flatten(nn.Module):
@@ -104,7 +104,7 @@ class Scale3(PruningModule):
 class Net(PruningModule):
     def __init__(self, mask=False):
         super(Net, self).__init__()
-        self.VGG = nn.Sequential(*list(vgg16(pretrained=True).children())[0])
+        self.VGG = nn.Sequential(*list(vgg16_bn(pretrained=True).children())[0])
         self.Scale_1 = Scale1_Linear(mask)
         self.Scale_2 = Scale2()
         self.Scale_3 = Scale3()
