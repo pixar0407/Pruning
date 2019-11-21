@@ -28,8 +28,8 @@ parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
 parser.add_argument('--epochs', type=int, default=10, metavar='N',
                     help='number of epochs to train (default: 1)')  # 경록
-parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
-                    help='learning rate (default: 0.01)')
+parser.add_argument('--lr', type=float, default=0.0000012, metavar='LR', #경록
+                    help='learning rate (default: 0.01)') # 원래는 웡카형 기준 0.0000005
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disables CUDA training')
 parser.add_argument('--seed', type=int, default=42, metavar='S',
@@ -167,12 +167,12 @@ util.log(args.log, f"initial_accuracy {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
 torch.save(model.state_dict(), '/content/gdrive/My Drive/data/qqqqL2x_20e.ckpt') # 경록
 
-print("---2th  Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/qqqqL2x_30e.ckpt') # 경록
+# print("---2th  Initial training ---")
+# train(args.epochs)
+# accuracy = test()
+# util.log(args.log, f"initial_accuracy {accuracy}")
+# # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/qqqqL2x_30e.ckpt') # 경록
 
 # print("---3th  Initial training ---")
 # train(args.epochs)
