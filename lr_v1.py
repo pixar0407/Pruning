@@ -17,7 +17,6 @@ import util
 import model_utils
 from dataset import NYUDataset
 from custom_transforms import *
-import plot_utils
 
 os.makedirs('saves', exist_ok=True)
 
@@ -28,9 +27,9 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
 parser.add_argument('--epochs', type=int, default=10, metavar='N',
-                    help='number of epochs to train (default: 1)')
-parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
-                    help='learning rate (default: 0.01)')
+                    help='number of epochs to train (default: 1)')  # 경록
+parser.add_argument('--lr', type=float, default=0.000001, metavar='LR', #경록
+                    help='learning rate (default: 0.01)') # 원래는 웡카형 기준 0.0000005
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disables CUDA training')
 parser.add_argument('--seed', type=int, default=42, metavar='S',
@@ -86,7 +85,7 @@ tfms = transforms.Compose([
     ImgAndDepthToTensor(),
     NormalizeImg(mean, std)
 ])
-
+# ds = NYUDataset('/content/gdrive/My Drive/data/', tfms) # 경록
 ds = NYUDataset('/content/gdrive/My Drive/data/train.mat', tfms) # 경록
 dl = torch.utils.data.DataLoader(ds, bs, shuffle=True)
 
@@ -96,15 +95,14 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 
 # Define which model to use
-model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/L2x_100e.ckpt', map_location="cpu")) # 경록
+model = Net(mask=True).to(device) # 경록
 
 print(model)
 util.print_model_parameters(model)
 
 # NOTE : `weight_decay` term denotes L2 regularization loss term
 optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
-# optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001) # 경록
+# optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=0.0001) #경록
 initial_optimizer_state_dict = optimizer.state_dict()
 
 def train(epochs):
@@ -153,62 +151,33 @@ def test():
 
 
 # Initial training
-print("--- 0th Initial training ---")
+print("---0th  Initial training ---")
 train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_120e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_110e.ckpt')# 경록
-
-print("--- 1th Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_130e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_120e.ckpt')# 경록
-
-print("--- 2th Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_140e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_130e.ckpt')# 경록
-
-print("--- 3th Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_150e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_140e.ckpt')# 경록
-
-print("--- 4th Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_150e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/L2x_150e.ckpt')# 경록
-
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_10e.ckpt') # 경록
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
 
-# Pruning
-########################################################################################################################
-############################################################
-############################################################여기서 perentile할 건지, std할건지 정해야 한다.
-########################################################################################################################
-# model.prune_by_percentile(args.percentile)
-# accuracy = test()
-# util.log(args.log, f"accuracy_after_pruning {accuracy}")
-# print("--- After pruning ---")
-# util.print_nonzeros(model)
+print("---1th  Initial training ---")
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_20e.ckpt') # 경록
 
-# Retrain
-# print("--- Retraining ---")
-# optimizer.load_state_dict(initial_optimizer_state_dict) # Reset the optimizer
-# train(args.epochs)
-# torch.save(model, f"saves/model_after_retraining.ptmodel")
-# accuracy = test()
-# util.log(args.log, f"accuracy_after_retraining {accuracy}")
-#
-# print("--- After Retraining ---")
-# util.print_nonzeros(model)
+print("---2th  Initial training ---")
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_30e.ckpt') # 경록
+
+print("---3th  Initial training ---")
+train(args.epochs)
+accuracy = test()
+util.log(args.log, f"initial_accuracy {accuracy}")
+torch.save(model, f"/content/gdrive/My Drive/data/lr_v1_L2x_40e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_40e.ckpt') # 경록
+
