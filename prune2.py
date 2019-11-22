@@ -98,7 +98,7 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 # Define which model to use
 model = Net(mask=True).to(device)
 model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.ckpt', map_location="cpu")) # 경록
-
+initial_model_state_dict = model.load_state_dict()
 print(model)
 # util.print_model_parameters(model)
 
@@ -161,8 +161,9 @@ util.print_nonzeros(model)
 ########################################################################################################################
 # model.prune_by_percentile(args.percentile) #경록
 
-i=2.0
-for num in range(0, 8, 1):
+i=0.4
+for num in range(0, 18, 1):
+    model.load_state_dict(initial_model_state_dict)  # 경록
     i += 0.2
     print(f"sensetivity : {i}")
     model.prune_by_std(i)
