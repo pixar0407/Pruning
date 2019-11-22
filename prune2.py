@@ -161,26 +161,28 @@ util.print_nonzeros(model)
 ########################################################################################################################
 # model.prune_by_percentile(args.percentile) #경록
 
-# i=0.4
-# for num in range(0, 8, 1):
-#     i += 0.2
-#     print(f"sensetivity : {i}")
-#     model.prune_by_std(i)
-#     print("--- After pruning ---")
-#     accuracy = test()
-#     util.log(args.log, f"accuracy_after_pruning {accuracy}")
-#     util.print_nonzeros(model)
-
-# percentile
-i=80
-for num in range(0, 20, 1):
-    i += 1
-    print(f"percentile : {i}")
-    model.prune_by_percentile(i)
+i=2.0
+for num in range(0, 8, 1):
+    i += 0.2
+    print(f"sensetivity : {i}")
+    model.prune_by_std(i)
     print("--- After pruning ---")
     accuracy = test()
     util.log(args.log, f"accuracy_after_pruning {accuracy}")
     util.print_nonzeros(model)
+
+
+
+# percentile
+# i=80
+# for num in range(0, 20, 1):
+#     i += 1
+#     print(f"percentile : {i}")
+#     model.prune_by_percentile(i)
+#     print("--- After pruning ---")
+#     accuracy = test()
+#     util.log(args.log, f"accuracy_after_pruning {accuracy}")
+#     util.print_nonzeros(model)
 
 
 # # Retrain
