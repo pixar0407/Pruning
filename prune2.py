@@ -154,18 +154,26 @@ def test():
 
 print("--- Before pruning ---")
 util.print_nonzeros(model)
-
+accuracy = test()
+util.log(args.log, f"accuracy_after_pruning {accuracy}")
 # Pruning
 ########################################################################################################################
 ############################################################
 ############################################################여기서 perentile할 건지, std할건지 정해야 한다.
 ########################################################################################################################
 # model.prune_by_percentile(args.percentile) #경록
-model.prune_by_std(args.sensitivity)
-accuracy = test()
-util.log(args.log, f"accuracy_after_pruning {accuracy}")
-print("--- After pruning ---")
-util.print_nonzeros(model)
+
+i=0.0
+for num in range(0, 40, 1):
+    i += 0.1
+    print(f"sensetivity : {i}")
+    model.prune_by_std(i)
+    accuracy = test()
+    util.log(args.log, f"accuracy_after_pruning {accuracy}")
+    print("--- After pruning ---")
+    util.print_nonzeros(model)
+
+
 
 # # Retrain
 # print("---0th  Retraining ---")
@@ -175,6 +183,6 @@ util.print_nonzeros(model)
 # util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_150e_pr_std1_rt_1.ptmodel") # 경록
 # torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_150e_pr_std1_rt_1.ckpt')# 경록
-# 
+#
 # print("--- 0th After Retraining ---")
 # util.print_nonzeros(model)
