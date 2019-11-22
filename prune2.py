@@ -39,7 +39,7 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--log', type=str, default='log.txt',
                     help='log file name')
-parser.add_argument('--sensitivity', type=float, default=2.1,
+parser.add_argument('--sensitivity', type=float, default=1,
                     help="sensitivity value that is multiplied to layer's std in order to get threshold value")
 parser.add_argument('--percentile', type=float, default=85,
                     help="percentile value that is under % value to get threshold value")
@@ -161,15 +161,15 @@ util.print_nonzeros(model)
 ########################################################################################################################
 # model.prune_by_percentile(args.percentile) #경록
 
-# i=2.0
-# for num in range(0, 8, 1):
-#     i += 0.2
-#     print(f"sensetivity : {i}")
-model.prune_by_std(args.sensitivity)
-print("--- After pruning ---")
-accuracy = test()
-util.log(args.log, f"accuracy_after_pruning {accuracy}")
-util.print_nonzeros(model)
+i=2.0
+for num in range(0, 8, 1):
+    i += 0.2
+    print(f"sensetivity : {i}")
+    model.prune_by_std(i)
+    print("--- After pruning ---")
+    accuracy = test()
+    util.log(args.log, f"accuracy_after_pruning {accuracy}")
+    util.print_nonzeros(model)
 
 
 
