@@ -39,7 +39,7 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--log', type=str, default='log.txt',
                     help='log file name')
-parser.add_argument('--sensitivity', type=float, default=1.8,
+parser.add_argument('--sensitivity', type=float, default=1.6,
                     help="sensitivity value that is multiplied to layer's std in order to get threshold value")
 parser.add_argument('--percentile', type=float, default=85,
                     help="percentile value that is under % value to get threshold value")
