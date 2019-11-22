@@ -153,7 +153,7 @@ def test():
 
 # Initial training
 print("---0th  Initial training ---")
-train(args.epochs)
+# train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_50e.ptmodel") # 경록
@@ -161,12 +161,12 @@ torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_50e.ckpt
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
 
-print("---1th  Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_60e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_60e.ckpt') # 경록
+# print("---1th  Initial training ---")
+# train(args.epochs)
+# accuracy = test()
+# util.log(args.log, f"initial_accuracy {accuracy}")
+# # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_60e.ptmodel") # 경록
+# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_60e.ckpt') # 경록
 
 # print("---2th  Initial training ---")
 # train(args.epochs)
