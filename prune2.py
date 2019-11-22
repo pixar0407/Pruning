@@ -137,25 +137,23 @@ def train(epochs):
 def test():
     model.eval()
     test_loss = 0
-    test_count = 0
     with torch.no_grad():
         print(f'tl length:{len(tl.dataset):.4f}')
         for data, target in tl:
             data, target = data.to(device), target.to(device)
             output = model(data)
-            test_count += 1
-            print(f'test count: {test_count:.4f}')
+
             test_loss += model_utils.depth_loss(output, target).item()
 
         test_loss /= len(tl.dataset)
+        print('test is over')
         print(f'Test set: Average loss: {test_loss:.4f}')
     return test_loss
 
 
 print("--- Before pruning ---")
 util.print_nonzeros(model)
-accuracy = test()
-util.log(args.log, f"accuracy_after_pruning {accuracy}")
+
 # Pruning
 ########################################################################################################################
 ############################################################
@@ -163,16 +161,26 @@ util.log(args.log, f"accuracy_after_pruning {accuracy}")
 ########################################################################################################################
 # model.prune_by_percentile(args.percentile) #경록
 
-i=0.0
-for num in range(0, 40, 1):
-    i += 0.1
-    print(f"sensetivity : {i}")
-    model.prune_by_std(i)
-    accuracy = test()
-    util.log(args.log, f"accuracy_after_pruning {accuracy}")
-    print("--- After pruning ---")
-    util.print_nonzeros(model)
+# i=0.0
+# for num in range(0, 40, 1):
+#     i += 0.1
+#     print(f"sensetivity : {i}")
+#     model.prune_by_std(i)
+#     accuracy = test()
+#     print("--- After pruning ---")
+#     util.log(args.log, f"accuracy_after_pruning {accuracy}")
+#     util.print_nonzeros(model)
 
+# percentile
+i=49
+for num in range(0, 50, 1):
+    i += 1
+    print(f"percentile : {i}")
+    model.prune_by_percentile(i)
+    accuracy = test()
+    print("--- After pruning ---")
+    util.log(args.log, f"accuracy_after_pruning {accuracy}")
+    util.print_nonzeros(model)
 
 
 # # Retrain
