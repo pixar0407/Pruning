@@ -96,6 +96,7 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 # Define which model to use
 model = Net(mask=True).to(device) # 경록
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/lr_v1_L2x_40e.ckpt', map_location="cpu")) # 경록
 
 print(model)
 util.print_model_parameters(model)
@@ -155,8 +156,8 @@ print("---0th  Initial training ---")
 train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_10e.ckpt') # 경록
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_50e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_50e.ckpt') # 경록
 # print("--- Before pruning ---")
 # util.print_nonzeros(model)
 
@@ -164,20 +165,20 @@ print("---1th  Initial training ---")
 train(args.epochs)
 accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_20e.ckpt') # 경록
+# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_60e.ptmodel") # 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_60e.ckpt') # 경록
 
-print("---2th  Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-# torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_30e.ckpt') # 경록
-
-print("---3th  Initial training ---")
-train(args.epochs)
-accuracy = test()
-util.log(args.log, f"initial_accuracy {accuracy}")
-torch.save(model, f"/content/gdrive/My Drive/data/lr_v1_L2x_40e.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_40e.ckpt') # 경록
+# print("---2th  Initial training ---")
+# train(args.epochs)
+# accuracy = test()
+# util.log(args.log, f"initial_accuracy {accuracy}")
+# # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_30e.ptmodel") # 경록
+# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_30e.ckpt') # 경록
+#
+# print("---3th  Initial training ---")
+# train(args.epochs)
+# accuracy = test()
+# util.log(args.log, f"initial_accuracy {accuracy}")
+# torch.save(model, f"/content/gdrive/My Drive/data/lr_v1_L2x_40e.ptmodel") # 경록
+# torch.save(model.state_dict(), '/content/gdrive/My Drive/data/lr_v1_L2x_40e.ckpt') # 경록
 
