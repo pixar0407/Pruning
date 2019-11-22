@@ -99,7 +99,7 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 model = Net(mask=True).to(device)
 model.load_state_dict(torch.load('/content/gdrive/My Drive/data/L2x_110e.ckpt', map_location="cpu")) # 경록
 
-# print(model)
+print(model)
 # util.print_model_parameters(model)
 
 # NOTE : `weight_decay` term denotes L2 regularization loss term
