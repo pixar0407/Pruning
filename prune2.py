@@ -98,7 +98,7 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 # Define which model to use
 model = Net(mask=True).to(device)
 model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.ckpt', map_location="cpu")) # 경록
-initial_model_state_dict = model.load_state_dict()
+initial_model_state_dict = model.state_dict()
 print(model)
 # util.print_model_parameters(model)
 
