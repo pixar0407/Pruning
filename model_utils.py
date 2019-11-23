@@ -54,21 +54,26 @@ def im_gradient_loss(d_batch, n_pixels):
 
     return G.view(-1, n_pixels).mean(dim=1).sum()
 
-# def err_rms_linear(preds, actual_depth):
-#     # preds.shape        -> [batch_size, 1, 120, 160]
-#     # actual_depth.shape -> [batch_size, 120, 160]
-#     n_pixels = actual_depth.shape[1] * actual_depth.shape[2] # 120*160
-#
-#     # 아래와 같이 loss가 설정되었으므로 아래를 따라야 한다.
-#     preds = (preds * 0.225) + 0.45
-#     preds = preds * 255
-#     preds[preds <= 0] = 0.00001
-#     actual_depth[actual_depth == 0] = 0.00001
-#     actual_depth.unsqueeze_(dim=1) # actual_depth 를
-#
-#     diff = preds - actual_depth
-#     print(f'diff shape: {diff.shape}')
-#     return diff
+def err_rms_linear(preds, actual_depth):
+    # preds.shape        -> [batch_size, 1, 120, 160]
+    # actual_depth.shape -> [batch_size, 120, 160]
+    n_pixels = actual_depth.shape[1] * actual_depth.shape[2] # 120*160
+
+    # 아래와 같이 loss가 설정되었으므로 아래를 따라야 한다.
+    preds = (preds * 0.225) + 0.45
+    preds = preds * 255
+    preds[preds <= 0] = 0.00001
+    actual_depth[actual_depth == 0] = 0.00001
+    actual_depth.unsqueeze_(dim=1) # actual_depth 를
+
+    diff = preds - actual_depth
+    diff_pow = torch.pow(diff, 2)
+    a = torch.sum(diff_pow, 1)
+    a2 = torch.sum(a, 1)
+    a3 = a2/n_pixels
+    a4 = torch.sqrt(a3)
+    print(f'a4.shape: {a4.shape}')
+    return a4.sum
 
 def depth_loss(preds, actual_depth):
     # preds.shape        -> [batch_size, 1, 120, 160]
@@ -83,10 +88,7 @@ def depth_loss(preds, actual_depth):
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를
     d = torch.log(preds) - torch.log(actual_depth) #d.shape 8.1.120.160
-    
-    #실험
-    diff = preds - actual_depth
-    print(f'diff shape: {diff.shape}')
+
     
     grad_loss_term = im_gradient_loss(d, n_pixels)
     term_1 = torch.pow(d.view(-1, n_pixels), 2).mean(dim=1).sum()  # pixel wise mean, then batch sum

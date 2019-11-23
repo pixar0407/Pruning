@@ -96,27 +96,36 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 model = Net(mask=True).to(device)
 model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e_pr_re5.ckpt', map_location="cpu")) # 경록
 
+model1 = Net(mask=True).to(device)
+model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.ckpt', map_location="cpu")) # 경록
+
 
 def test():
     model.eval()
     test_loss = 0
     with torch.no_grad():
-        # for data, target in tl:
-        #     data, target = data.to(device), target.to(device)
-        #     output = model(data)
-        #     test_loss += model_utils.depth_loss(output, target).item()
-
         data, target = next(iter(tl))
         data, target = data.to(device), target.to(device)
         output = model(data)
-        test_loss += model_utils.depth_loss(output, target).item()
+        test_loss += model_utils.err_rms_linear(output, target).item()
 
         test_loss /= len(tl.dataset)
         print('test is over')
         print(f'Test set: Average loss: {test_loss:.4f}')
     return test_loss
 
-
-
+def test1():
+    model1.eval()
+    test_loss = 0
+    with torch.no_grad():
+        data, target = next(iter(tl))
+        data, target = data.to(device), target.to(device)
+        output = model1(data)
+        test_loss += model_utils.err_rms_linear(output, target).item()
+        test_loss /= len(tl.dataset)
+        print('test is over')
+        print(f'Test set: Average loss: {test_loss:.4f}')
+    return test_loss
 accuracy = test()
-util.log(args.log, f"accuracy_after_retraining {accuracy}")
+accuracy1 = test1()
+util.log(args.log, f"accuracy_after_retraining {accuracy} // {accuracy1}")
