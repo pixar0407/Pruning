@@ -61,8 +61,8 @@ def depth_loss(preds, actual_depth):
     n_pixels = actual_depth.shape[1] * actual_depth.shape[2]
 
     #
-    print(f'preds.shape:{preds.size}')
-    print(f'actual_depth.shape:{actual_depth.size}')
+    print(f'preds.shape:{preds.shape}')
+    print(f'actual_depth.shape:{actual_depth.shape}')
 
     preds = (preds * 0.225) + 0.45
     preds = preds * 255
