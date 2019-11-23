@@ -94,7 +94,6 @@ def err_rms_linear(preds, actual_depth):
     a2 = torch.sum(a, 2)
     a3 = a2/n_pixels
     a4 = torch.sqrt(a3)
-    print(f'a4.shape: {a4.shape}')
     return a4.sum()
 
 def err_rms_log(preds, actual_depth):
@@ -115,7 +114,6 @@ def err_rms_log(preds, actual_depth):
     a2 = torch.sum(a, 2)
     a3 = a2/n_pixels
     a4 = torch.sqrt(a3)
-    print(f'a4.shape: {a4.shape}')
     return a4.sum()
 
 def print_training_loss_summary(loss, total_steps, current_epoch, n_epochs, n_batches, print_every=10):
