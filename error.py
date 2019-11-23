@@ -109,7 +109,7 @@ def test():
         output = model(data)
         test_loss += model_utils.err_rms_linear(output, target).item()
 
-        test_loss /= len(tl.dataset)
+        test_loss /= 8
         print('test is over')
         print(f'Test set: Average loss: {test_loss:.4f}')
     return test_loss
@@ -122,10 +122,11 @@ def test1():
         data, target = data.to(device), target.to(device)
         output = model1(data)
         test_loss += model_utils.err_rms_linear(output, target).item()
-        test_loss /= len(tl.dataset)
+
+        test_loss /= 8
         print('test is over')
         print(f'Test set: Average loss: {test_loss:.4f}')
     return test_loss
 accuracy = test()
 accuracy1 = test1()
-print(f'model vs pruned model {accuracy} // {accuracy1}')
+print(f'model vs pruned model {accuracy:.4f} // {accuracy1:.4f}')
