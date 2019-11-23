@@ -102,31 +102,50 @@ model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.c
 
 def test():
     model.eval()
-    test_loss = 0
+    error_1 = 0
+    error_2 = 0
+    error_3 = 0
+    error_4 = 0
     with torch.no_grad():
         data, target = next(iter(tl))
         data, target = data.to(device), target.to(device)
         output = model(data)
-        test_loss += model_utils.err_rms_linear(output, target).item()
+        error_1 += model_utils.err_rms_linear(output, target).item()
+        error_2 += model_utils.err_rms_log(output, target).item()
+        error_3 += model_utils.err_abs_rel(output, target).item()
+        error_4 += model_utils.err_sql_rel(output, target).item()
 
-        test_loss /= 8
+        error_1 /= 8
+        error_2 /= 8
+        error_3 /= 8
+        error_4 /= 8
         print('test is over')
-        print(f'Test set: Average loss: {test_loss:.4f}')
-    return test_loss
+        print(f'Test set: Average loss: {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}')
+    return error_1
 
 def test1():
     model1.eval()
-    test_loss = 0
+    error_1 = 0
+    error_2 = 0
+    error_3 = 0
+    error_4 = 0
     with torch.no_grad():
         data, target = next(iter(tl))
         data, target = data.to(device), target.to(device)
         output = model1(data)
-        test_loss += model_utils.err_rms_linear(output, target).item()
+        error_1 += model_utils.err_rms_linear(output, target).item()
+        error_2 += model_utils.err_rms_log(output, target).item()
+        error_3 += model_utils.err_abs_rel(output, target).item()
+        error_4 += model_utils.err_sql_rel(output, target).item()
 
-        test_loss /= 8
+        error_1 /= 8
+        error_2 /= 8
+        error_3 /= 8
+        error_4 /= 8
         print('test is over')
-        print(f'Test set: Average loss: {test_loss:.4f}')
-    return test_loss
+        print(f'Test set: Average loss: {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}')
+    return error_1
+
+
 accuracy = test()
 accuracy1 = test1()
-print(f'model vs pruned model {accuracy:.4f} // {accuracy1:.4f}')
