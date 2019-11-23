@@ -108,7 +108,6 @@ def test():
 
         data, target = next(iter(tl))
         data, target = data.to(device), target.to(device)
-        print(f'each data {data[0][0][4][5]} target {target[0][4][5]} ')
         output = model(data)
         test_loss += model_utils.depth_loss(output, target).item()
 
