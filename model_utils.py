@@ -68,12 +68,12 @@ def err_rms_linear(preds, actual_depth):
 
     diff = preds - actual_depth
     diff_pow = torch.pow(diff, 2)
-    a = torch.sum(diff_pow, 1)
-    a2 = torch.sum(a, 1)
+    a = torch.sum(diff_pow, 2)
+    a2 = torch.sum(a, 2)
     a3 = a2/n_pixels
     a4 = torch.sqrt(a3)
     print(f'a4.shape: {a4.shape}')
-    return a4.sum
+    return a4.sum()
 
 def depth_loss(preds, actual_depth):
     # preds.shape        -> [batch_size, 1, 120, 160]
