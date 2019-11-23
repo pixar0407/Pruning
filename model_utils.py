@@ -56,13 +56,17 @@ def im_gradient_loss(d_batch, n_pixels):
 
 
 def depth_loss(preds, actual_depth):
-    # preds.shape        -> [16, 1, 120, 160]
-    # actual_depth.shape -> [16, 120, 160]
-    n_pixels = actual_depth.shape[1] * actual_depth.shape[2]
+    # preds.shape        -> [batch_size, 1, 120, 160]
+    # actual_depth.shape -> [batch_size, 120, 160]
+    n_pixels = actual_depth.shape[1] * actual_depth.shape[2] # 120*160
 
     #
-    print(f'preds.shape:{preds.shape}')
-    print(f'actual_depth.shape:{actual_depth.shape}')
+    print(f'preds {preds.shape}')
+    print(f'actual_depth {actual_depth.shape}')
+
+    print(f'each preds {preds[0][0][4][5]} actual_depth {actual_depth[0][4][5]} ')
+
+
 
     preds = (preds * 0.225) + 0.45
     preds = preds * 255

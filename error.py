@@ -101,11 +101,15 @@ def test():
     model.eval()
     test_loss = 0
     with torch.no_grad():
-        print(f'tl length:{len(tl.dataset):.4f}')
-        for data, target in tl:
-            data, target = data.to(device), target.to(device)
-            output = model(data)
-            test_loss += model_utils.depth_loss(output, target).item()
+        # for data, target in tl:
+        #     data, target = data.to(device), target.to(device)
+        #     output = model(data)
+        #     test_loss += model_utils.depth_loss(output, target).item()
+
+        data, target = next(iter(tl))
+        data, target = data.to(device), target.to(device)
+        output = model(data)
+        test_loss += model_utils.depth_loss(output, target).item()
 
         test_loss /= len(tl.dataset)
         print('test is over')
