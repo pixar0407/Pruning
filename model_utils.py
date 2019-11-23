@@ -88,6 +88,9 @@ def err_rms_linear(preds, actual_depth):
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를
 
+    preds = (preds/255)*2 - 1
+    actual_depth = (actual_depth / 255) * 2 - 1
+
     diff = preds - actual_depth
     diff_pow = torch.pow(diff, 2)
     a = torch.sum(diff_pow, 2)
@@ -110,6 +113,9 @@ def err_rms_log(preds, actual_depth):
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
 
+    preds = (preds/255)*2 - 1
+    actual_depth = (actual_depth / 255) * 2 - 1
+
     diff = torch.log(preds) - torch.log(actual_depth)
     diff_pow = torch.pow(diff, 2)
     a = torch.sum(diff_pow, 2)
@@ -129,6 +135,9 @@ def err_abs_rel(preds, actual_depth):
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
+
+    preds = (preds/255)*2 - 1
+    actual_depth = (actual_depth / 255) * 2 - 1
 
     diff = abs(preds - actual_depth)
     diff = diff/actual_depth
@@ -150,6 +159,9 @@ def err_sql_rel(preds, actual_depth):
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
+
+    preds = (preds/255)*2 - 1
+    actual_depth = (actual_depth / 255) * 2 - 1
 
     diff = abs(preds - actual_depth)
     diff_pow = torch.pow(diff, 2)
