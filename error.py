@@ -109,8 +109,8 @@ def test():
     with torch.no_grad():
         data, target = next(iter(tl))
         data, target = data.to(device), target.to(device)
-        print(f'{data.max()}{data.min()}')
-        print(f'{target.max()}{target.min()}')
+        print(f'{data.max():.4f} // {data.min():.4f}')
+        print(f'{target.max():.4f} // {target.min():.4f}')
         # output = model(data)
         # error_1 += model_utils.err_rms_linear(output, target).item()
         # error_2 += model_utils.err_rms_log(output, target).item()
