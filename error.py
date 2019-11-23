@@ -128,4 +128,4 @@ def test1():
     return test_loss
 accuracy = test()
 accuracy1 = test1()
-util.log(args.log, f"accuracy_after_retraining {accuracy} // {accuracy1}")
+print(f'model vs pruned model {accuracy} // {accuracy1}')
