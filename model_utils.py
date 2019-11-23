@@ -64,15 +64,13 @@ def depth_loss(preds, actual_depth):
     print(f'preds {preds.shape}')
     print(f'actual_depth {actual_depth.shape}')
 
-    print(f'each preds {preds[0][0][4][5]} actual_depth {actual_depth[0][4][5]} ')
-
-
-
+    # 아래와 같이 loss가 설정되었으므로 아래를 따라야 한다.
     preds = (preds * 0.225) + 0.45
     preds = preds * 255
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1)
+    print(f'actual_depth after unsqueeze {actual_depth.shape}')
     d = torch.log(preds) - torch.log(actual_depth)
 
     grad_loss_term = im_gradient_loss(d, n_pixels)
