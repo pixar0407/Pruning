@@ -104,12 +104,12 @@ def test():
     model.eval()
     test_loss = 0
     with torch.no_grad():
-        data, target = next(iter(tl))
-        data, target = data.to(device), target.to(device)
-        output = model(data)
-        test_loss += model_utils.err_rms_linear(output, target).item()
+        for data, target in tl:
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+            test_loss += model_utils.err_rms_linear(output, target).item()
 
-        test_loss /= 8
+        test_loss /= len(tl.dataset)
         print('test is over')
         print(f'Test set: Average loss: {test_loss:.4f}')
     return test_loss
@@ -118,12 +118,12 @@ def test1():
     model1.eval()
     test_loss = 0
     with torch.no_grad():
-        data, target = next(iter(tl))
-        data, target = data.to(device), target.to(device)
-        output = model1(data)
-        test_loss += model_utils.err_rms_linear(output, target).item()
+        for data, target in tl:
+            data, target = data.to(device), target.to(device)
+            output = model1(data)
+            test_loss += model_utils.err_rms_linear(output, target).item()
 
-        test_loss /= 8
+        test_loss /= len(tl.dataset)
         print('test is over')
         print(f'Test set: Average loss: {test_loss:.4f}')
     return test_loss
