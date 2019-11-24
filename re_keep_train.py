@@ -27,10 +27,10 @@ parser.add_argument('--batch-size', type=int, default=8, metavar='N',
                     help='input batch size for training (default: 8)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=1, metavar='N',
+parser.add_argument('--epochs', type=int, default=3, metavar='N',
                     help='number of epochs to train (default: 1)')
-parser.add_argument('--lr', type=float, default=0.0000005, metavar='LR',
-                    help='learning rate (default: 0.01)')
+parser.add_argument('--lr', type=float, default=0.00000035, metavar='LR',
+                    help='learning rate (default: 0.01)') # 0.0000005
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disables CUDA training')
 parser.add_argument('--seed', type=int, default=42, metavar='S',
@@ -97,7 +97,7 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 # Define which model to use
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e_pr_re5.ckpt', map_location="cpu")) # 경록
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e_pr_re15.ckpt', map_location="cpu")) # 경록
 
 print(model)
 # util.print_model_parameters(model)
@@ -162,7 +162,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re6.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re18.ckpt')# 경록
 
 # Retrain
 print("---1th  Retraining ---")
@@ -171,7 +171,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re7.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re21.ckpt')# 경록
 
 # Retrain
 print("---2th  Retraining ---")
@@ -180,7 +180,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re8.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re24.ckpt')# 경록
 
 # Retrain
 print("---3th  Retraining ---")
@@ -189,7 +189,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re9.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re27.ckpt')# 경록
 
 # Retrain
 print("---4th  Retraining ---")
@@ -198,7 +198,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re30.ckpt')# 경록
 
 # Retrain
 print("---5th  Retraining ---")
@@ -207,7 +207,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re11.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re33.ckpt')# 경록
 
 # Retrain
 print("---6th  Retraining ---")
@@ -216,7 +216,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re12.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re36.ckpt')# 경록
 
 # Retrain
 print("---7th  Retraining ---")
@@ -225,7 +225,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re13.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re39.ckpt')# 경록
 
 # Retrain
 print("---8th  Retraining ---")
@@ -234,7 +234,7 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re14.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re42.ckpt')# 경록
 
 # Retrain
 print("---9th  Retraining ---")
@@ -243,6 +243,6 @@ train(args.epochs)
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 # torch.save(model, f"/content/gdrive/My Drive/data/model_L1_110e_pr_re10.ptmodel") # 경록
-torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re15.ckpt')# 경록
+torch.save(model.state_dict(), '/content/gdrive/My Drive/data/model_L1_110e_pr_re45.ckpt')# 경록
 
 

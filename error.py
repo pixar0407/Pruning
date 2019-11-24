@@ -1,5 +1,6 @@
 import argparse
 import os
+import math
 
 import numpy as np
 import torch
@@ -101,7 +102,7 @@ model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.ck
 #프룬된 후
 model1 = Net(mask=True).to(device)
 model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e_pr_re11.ckpt', map_location="cpu")) # 경록
-
+criterion = nn.MSELoss()
 
 # 록이꺼
 # model_L2_190e_pr_re14
@@ -116,49 +117,83 @@ def test():
     error_2 = 0 # RMS log
     error_3 = 0 # abs rel
     error_4 = 0 # sqr rel
+    avg_psnr = 0  # psnr
     with torch.no_grad():
         data, target = next(iter(tl))
         data, target = data.to(device), target.to(device)
         output = model(data)
         error_0 += model_utils.depth_loss(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
         error_1 += model_utils.err_rms_linear(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
         error_2 += model_utils.err_rms_log(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
         error_3 += model_utils.err_abs_rel(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
         error_4 += model_utils.err_sql_rel(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
+
+        # psnr을 위해서 가공 중.
+        output = (output * 0.225) + 0.45
+        output = output * 255
+        output[output <= 0] = 0.00001
+        target[target == 0] = 0.00001
+        output.squeeze_(dim=1)  #
+        mse = criterion(output, target)
+        psnr = 10 * math.log10(120 * 160 / mse.item())
+        avg_psnr += psnr
 
         error_0 /= 8
         error_1 /= 8
         error_2 /= 8
         error_3 /= 8
         error_4 /= 8
+        avg_psnr /= 8
         print('test is over')
-        print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}')
+        print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}  /{avg_psnr:.4f}')
     return error_1
 
 def test1():
     model1.eval()
     error_0 = 0 # scale-Invariant Error
-    error_1 = 0
-    error_2 = 0
-    error_3 = 0
-    error_4 = 0
+    error_1 = 0 # RMS linear
+    error_2 = 0 # RMS log
+    error_3 = 0 # abs rel
+    error_4 = 0 # sqr rel
+    avg_psnr = 0  # psnr
     with torch.no_grad():
         data, target = next(iter(tl))
         data, target = data.to(device), target.to(device)
         output = model1(data)
         error_0 += model_utils.depth_loss(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
         error_1 += model_utils.err_rms_linear(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
         error_2 += model_utils.err_rms_log(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
         error_3 += model_utils.err_abs_rel(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
         error_4 += model_utils.err_sql_rel(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
+
+        # psnr을 위해서 가공 중.
+        output = (output * 0.225) + 0.45
+        output = output * 255
+        output[output <= 0] = 0.00001
+        target[target == 0] = 0.00001
+        output.squeeze_(dim=1)  #
+        mse = criterion(output, target)
+        psnr = 10 * math.log10(120 * 160 / mse.item())
+        avg_psnr += psnr
 
         error_0 /= 8
         error_1 /= 8
         error_2 /= 8
         error_3 /= 8
         error_4 /= 8
+        avg_psnr /= 8
         print('test is over')
-        print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}')
+        print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}  /{avg_psnr:.4f}')
     return error_1
 
 
