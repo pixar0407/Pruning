@@ -94,7 +94,7 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 # Define which model to use
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e_pr_re5.ckpt', map_location="cpu")) # 경록
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/answer.ckpt', map_location="cpu")) # 경록
 
 model1 = Net(mask=True).to(device)
 model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.ckpt', map_location="cpu")) # 경록
@@ -102,25 +102,28 @@ model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.c
 
 def test():
     model.eval()
-    error_1 = 0
-    error_2 = 0
-    error_3 = 0
-    error_4 = 0
+    error_0 = 0 # scale-Invariant Error
+    error_1 = 0 # RMS linear
+    error_2 = 0 # RMS log
+    error_3 = 0 # abs rel
+    error_4 = 0 # sqr rel
     with torch.no_grad():
         data, target = next(iter(tl))
         data, target = data.to(device), target.to(device)
         output = model(data)
+        error_0 += model_utils.depth_loss(output, target).item()
         error_1 += model_utils.err_rms_linear(output, target).item()
         error_2 += model_utils.err_rms_log(output, target).item()
         error_3 += model_utils.err_abs_rel(output, target).item()
         error_4 += model_utils.err_sql_rel(output, target).item()
 
+        error_0 /= 8
         error_1 /= 8
         error_2 /= 8
         error_3 /= 8
         error_4 /= 8
         print('test is over')
-        print(f'Test set: Average loss: {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}')
+        print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}')
     return error_1
 
 def test1():
@@ -148,4 +151,4 @@ def test1():
 
 
 accuracy = test()
-accuracy1 = test1()
+# accuracy1 = test1()
