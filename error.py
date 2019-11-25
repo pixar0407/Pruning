@@ -119,31 +119,30 @@ def test():
     error_4 = 0 # sqr rel
     avg_psnr = 0  # psnr
     with torch.no_grad():
-        data, target = next(iter(tl))
-        data, target = data.to(device), target.to(device)
-        output = model(data)
-        error_0 += model_utils.depth_loss(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        error_1 += model_utils.err_rms_linear(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        error_2 += model_utils.err_rms_log(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        error_3 += model_utils.err_abs_rel(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        error_4 += model_utils.err_sql_rel(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        avg_psnr += model_utils.err_psnr(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
+        for data, target in tl:
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+            error_0 += model_utils.depth_loss(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            error_1 += model_utils.err_rms_linear(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            error_2 += model_utils.err_rms_log(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            error_3 += model_utils.err_abs_rel(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            error_4 += model_utils.err_sql_rel(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            avg_psnr += model_utils.err_psnr(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
 
-        error_0 /= 8
-        error_1 /= 8
-        error_2 /= 8
-        error_3 /= 8
-        error_4 /= 8
-        avg_psnr /= 8
+        error_0 /= len(tl.dataset)
+        error_1 /= len(tl.dataset)
+        error_2 /= len(tl.dataset)
+        error_3 /= len(tl.dataset)
+        error_4 /= len(tl.dataset)
+        avg_psnr /= len(tl.dataset)
         print('test is over')
-        print(
-            f'scale-Invariant Error:{error_0:.4f} \nRMS linear : {error_1:.4f} \nRMS log : {error_2:.4f} \nabs rel : {error_3:.4f} \nsqr rel : {error_4:.4f}  \npsnr : {avg_psnr:.4f}')
+        print(f'sclInvError:{error_0:.4f} RMSlinear:{error_1:.4f} RMSlog:{error_2:.4f} AbsRel:{error_3:.4f} SqrRel:{error_4:.4f} PSNR:{avg_psnr:.4f}')
     return error_1
 
 def test1():
@@ -155,32 +154,104 @@ def test1():
     error_4 = 0 # sqr rel
     avg_psnr = 0  # psnr
     with torch.no_grad():
-        data, target = next(iter(tl))
-        data, target = data.to(device), target.to(device)
-        output = model1(data)
-        error_0 += model_utils.depth_loss(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        error_1 += model_utils.err_rms_linear(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        error_2 += model_utils.err_rms_log(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        error_3 += model_utils.err_abs_rel(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        error_4 += model_utils.err_sql_rel(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
-        avg_psnr += model_utils.err_psnr(output, target).item()
-        target.squeeze_(dim=1)  # actual_depth 를
+        for data, target in tl:
+            data, target = data.to(device), target.to(device)
+            output = model1(data)
+            error_0 += model_utils.depth_loss(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            error_1 += model_utils.err_rms_linear(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            error_2 += model_utils.err_rms_log(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            error_3 += model_utils.err_abs_rel(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            error_4 += model_utils.err_sql_rel(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
+            avg_psnr += model_utils.err_psnr(output, target).item()
+            target.squeeze_(dim=1)  # actual_depth 를
 
-        error_0 /= 8
-        error_1 /= 8
-        error_2 /= 8
-        error_3 /= 8
-        error_4 /= 8
-        avg_psnr /= 8
+        error_0 /= len(tl.dataset)
+        error_1 /= len(tl.dataset)
+        error_2 /= len(tl.dataset)
+        error_3 /= len(tl.dataset)
+        error_4 /= len(tl.dataset)
+        avg_psnr /= len(tl.dataset)
         print('test is over')
-        print(f'scale-Invariant Error:{error_0:.4f} \nRMS linear : {error_1:.4f} \nRMS log : {error_2:.4f} \nabs rel : {error_3:.4f} \nsqr rel : {error_4:.4f}  \npsnr : {avg_psnr:.4f}')
+        print(f'sclInvError:{error_0:.4f} RMSlinear:{error_1:.4f} RMSlog:{error_2:.4f} AbsRel:{error_3:.4f} SqrRel:{error_4:.4f} PSNR:{avg_psnr:.4f}')
     return error_1
 
 
 accuracy = test()
 accuracy1 = test1()
+
+
+# def test():
+#     model.eval()
+#     error_0 = 0 # scale-Invariant Error
+#     error_1 = 0 # RMS linear
+#     error_2 = 0 # RMS log
+#     error_3 = 0 # abs rel
+#     error_4 = 0 # sqr rel
+#     avg_psnr = 0  # psnr
+#     with torch.no_grad():
+#         data, target = next(iter(tl))
+#         data, target = data.to(device), target.to(device)
+#         output = model(data)
+#         error_0 += model_utils.depth_loss(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         error_1 += model_utils.err_rms_linear(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         error_2 += model_utils.err_rms_log(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         error_3 += model_utils.err_abs_rel(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         error_4 += model_utils.err_sql_rel(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         avg_psnr += model_utils.err_psnr(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#
+#         error_0 /= 8
+#         error_1 /= 8
+#         error_2 /= 8
+#         error_3 /= 8
+#         error_4 /= 8
+#         avg_psnr /= 8
+#         print('test is over')
+#         print(
+#             f'scale-Invariant Error:{error_0:.4f} \nRMS linear : {error_1:.4f} \nRMS log : {error_2:.4f} \nabs rel : {error_3:.4f} \nsqr rel : {error_4:.4f}  \npsnr : {avg_psnr:.4f}')
+#     return error_1
+#
+# def test1():
+#     model1.eval()
+#     error_0 = 0 # scale-Invariant Error
+#     error_1 = 0 # RMS linear
+#     error_2 = 0 # RMS log
+#     error_3 = 0 # abs rel
+#     error_4 = 0 # sqr rel
+#     avg_psnr = 0  # psnr
+#     with torch.no_grad():
+#         data, target = next(iter(tl))
+#         data, target = data.to(device), target.to(device)
+#         output = model1(data)
+#         error_0 += model_utils.depth_loss(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         error_1 += model_utils.err_rms_linear(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         error_2 += model_utils.err_rms_log(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         error_3 += model_utils.err_abs_rel(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         error_4 += model_utils.err_sql_rel(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#         avg_psnr += model_utils.err_psnr(output, target).item()
+#         target.squeeze_(dim=1)  # actual_depth 를
+#
+#         error_0 /= 8
+#         error_1 /= 8
+#         error_2 /= 8
+#         error_3 /= 8
+#         error_4 /= 8
+#         avg_psnr /= 8
+#         print('test is over')
+#         print(f'scale-Invariant Error:{error_0:.4f} \nRMS linear : {error_1:.4f} \nRMS log : {error_2:.4f} \nabs rel : {error_3:.4f} \nsqr rel : {error_4:.4f}  \npsnr : {avg_psnr:.4f}')
+#     return error_1

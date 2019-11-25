@@ -138,7 +138,6 @@ def test():
     model.eval()
     test_loss = 0
     with torch.no_grad():
-        print(f'tl length:{len(tl.dataset):.4f}')
         for data, target in tl:
             data, target = data.to(device), target.to(device)
             output = model(data)
