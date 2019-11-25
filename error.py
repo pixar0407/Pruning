@@ -109,8 +109,11 @@ criterion = nn.MSELoss()
 # 내꺼
 # model_L1_110e_pr_re11
 
-util.print_model_parameters(model)
-util.print_model_parameters(model1)
+print("--- Before pruning ---")
+util.print_nonzeros(model)
+
+print("--- After pruning ---")
+util.print_nonzeros(model1)
 
 def test():
     model.eval()
