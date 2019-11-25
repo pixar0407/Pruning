@@ -132,16 +132,8 @@ def test():
         target.squeeze_(dim=1)  # actual_depth 를
         error_4 += model_utils.err_sql_rel(output, target).item()
         target.squeeze_(dim=1)  # actual_depth 를
-
-        # psnr을 위해서 가공 중.
-        output = (output * 0.225) + 0.45
-        output = output * 255
-        output[output <= 0] = 0.00001
-        target[target == 0] = 0.00001
-        output.squeeze_(dim=1)  #
-        mse = criterion(output, target)
-        psnr = 10 * math.log10(120 * 160 / mse.item())
-        avg_psnr += psnr
+        avg_psnr += model_utils.err_psnr(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
 
         error_0 /= 8
         error_1 /= 8
@@ -150,7 +142,8 @@ def test():
         error_4 /= 8
         avg_psnr /= 8
         print('test is over')
-        print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}  /{avg_psnr:.4f}')
+        print(
+            f'scale-Invariant Error:{error_0:.4f} \nRMS linear : {error_1:.4f} \nRMS log : {error_2:.4f} \nabs rel : {error_3:.4f} \nsqr rel : {error_4:.4f}  \npsnr : {avg_psnr:.4f}')
     return error_1
 
 def test1():
@@ -175,16 +168,8 @@ def test1():
         target.squeeze_(dim=1)  # actual_depth 를
         error_4 += model_utils.err_sql_rel(output, target).item()
         target.squeeze_(dim=1)  # actual_depth 를
-
-        # psnr을 위해서 가공 중.
-        output = (output * 0.225) + 0.45
-        output = output * 255
-        output[output <= 0] = 0.00001
-        target[target == 0] = 0.00001
-        output.squeeze_(dim=1)  #
-        mse = criterion(output, target)
-        psnr = 10 * math.log10(120 * 160 / mse.item())
-        avg_psnr += psnr
+        avg_psnr += model_utils.err_psnr(output, target).item()
+        target.squeeze_(dim=1)  # actual_depth 를
 
         error_0 /= 8
         error_1 /= 8
@@ -193,7 +178,7 @@ def test1():
         error_4 /= 8
         avg_psnr /= 8
         print('test is over')
-        print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}  /{avg_psnr:.4f}')
+        print(f'scale-Invariant Error:{error_0:.4f} \nRMS linear : {error_1:.4f} \nRMS log : {error_2:.4f} \nabs rel : {error_3:.4f} \nsqr rel : {error_4:.4f}  \npsnr : {avg_psnr:.4f}')
     return error_1
 
 
