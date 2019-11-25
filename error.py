@@ -97,18 +97,20 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 #프룬되기 전
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.ckpt', map_location="cpu")) # 경록
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L2_190e.ckpt', map_location="cpu")) # 경록
 
 #프룬된 후
 model1 = Net(mask=True).to(device)
-model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e_pr_re11.ckpt', map_location="cpu")) # 경록
+model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L2_190e_pr_re14.ckpt', map_location="cpu")) # 경록
 criterion = nn.MSELoss()
 
 # 록이꺼
 # model_L2_190e_pr_re14
-
 # 내꺼
 # model_L1_110e_pr_re11
+
+util.print_model_parameters(model)
+util.print_model_parameters(model1)
 
 def test():
     model.eval()
@@ -141,7 +143,6 @@ def test():
         error_3 /= len(tl.dataset)
         error_4 /= len(tl.dataset)
         avg_psnr /= len(tl.dataset)
-        print('test is over')
         print(f'sclInvError:{error_0:.4f} RMSlinear:{error_1:.4f} RMSlog:{error_2:.4f} AbsRel:{error_3:.4f} SqrRel:{error_4:.4f} PSNR:{avg_psnr:.4f}')
     return error_1
 
@@ -176,13 +177,12 @@ def test1():
         error_3 /= len(tl.dataset)
         error_4 /= len(tl.dataset)
         avg_psnr /= len(tl.dataset)
-        print('test is over')
         print(f'sclInvError:{error_0:.4f} RMSlinear:{error_1:.4f} RMSlog:{error_2:.4f} AbsRel:{error_3:.4f} SqrRel:{error_4:.4f} PSNR:{avg_psnr:.4f}')
     return error_1
 
 
-accuracy = test()
-accuracy1 = test1()
+# accuracy = test()
+# accuracy1 = test1()
 
 
 # def test():
