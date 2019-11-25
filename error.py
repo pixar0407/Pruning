@@ -97,11 +97,11 @@ tl = torch.utils.data.DataLoader(ts, bs, shuffle=True)
 
 #프룬되기 전
 model = Net(mask=True).to(device)
-model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L2_190e.ckpt', map_location="cpu")) # 경록
+model.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e.ckpt', map_location="cpu")) # 경록
 
 #프룬된 후
 model1 = Net(mask=True).to(device)
-model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L2_190e_pr_re14.ckpt', map_location="cpu")) # 경록
+model1.load_state_dict(torch.load('/content/gdrive/My Drive/data/model_L1_110e_pr_re11.ckpt', map_location="cpu")) # 경록
 criterion = nn.MSELoss()
 
 # 록이꺼
