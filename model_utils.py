@@ -67,6 +67,7 @@ def depth_loss(preds, actual_depth):
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를
+
     d = torch.log(preds) - torch.log(actual_depth) #d.shape 8.1.120.160
     grad_loss_term = im_gradient_loss(d, n_pixels)
     term_1 = torch.pow(d.view(-1, n_pixels), 2).mean(dim=1).sum()  # pixel wise mean, then batch sum
@@ -92,8 +93,7 @@ def err_rms_linear(preds, actual_depth):
     a2 = torch.sum(a, 2)
     a3 = a2/n_pixels
     a4 = torch.sqrt(a3)
-    a5=a4.sum()
-    print(f"$$$$$$$$$$${a4}^^^^^^^^^^^{a5}")
+    a5 = a4.sum()
     return a5
 
 def err_rms_log(preds, actual_depth):
@@ -107,7 +107,6 @@ def err_rms_log(preds, actual_depth):
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
-
 
     diff = torch.log(preds) - torch.log(actual_depth)
     diff_pow = torch.pow(diff, 2)
@@ -176,7 +175,7 @@ def err_psnr(preds, actual_depth):
     a = torch.sum(diff_pow, 2)
     a2 = torch.sum(a, 2)
     a3 = a2 / n_pixels
-    a3 = n_pixels/a3
+    a3 = n_pixels*n_pixels/a3
     a4 = 10*torch.log10(a3)
     return a4.sum()
 
