@@ -130,32 +130,26 @@ def test():
             print(f"1 {output.shape}")
             print(f"1 {target.shape}")
             error_0 += model_utils.depth_loss(output, target).item()
-            print(f"1 {error_0.shape}")
             target.squeeze_(dim=1)  # actual_depth 를
             print(f"2 {output.shape}")
             print(f"2 {target.shape}")
             error_1 += model_utils.err_rms_linear(output, target).item()
-            print(f"2 {error_1.shape}")
             target.squeeze_(dim=1)  # actual_depth 를
             print(f"3 {output.shape}")
             print(f"3 {target.shape}")
             error_2 += model_utils.err_rms_log(output, target).item()
-            print(f"3 {error_2.shape}")
             target.squeeze_(dim=1)  # actual_depth 를
             print(f"4 {output.shape}")
             print(f"4 {target.shape}")
             error_3 += model_utils.err_abs_rel(output, target).item()
-            print(f"4 {error_3.shape}")
             target.squeeze_(dim=1)  # actual_depth 를
             print(f"5 {output.shape}")
             print(f"5 {target.shape}")
             error_4 += model_utils.err_sql_rel(output, target).item()
-            print(f"5 {error_4.shape}")
             target.squeeze_(dim=1)  # actual_depth 를
             print(f"6 {output.shape}")
             print(f"6 {target.shape}")
             avg_psnr += model_utils.err_psnr(output, target).item()
-            print(f"1 {avg_psnr.shape}")
             target.squeeze_(dim=1)  # actual_depth 를
 
         error_0 /= len(tl.dataset)

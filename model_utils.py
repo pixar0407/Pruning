@@ -92,7 +92,9 @@ def err_rms_linear(preds, actual_depth):
     a2 = torch.sum(a, 2)
     a3 = a2/n_pixels
     a4 = torch.sqrt(a3)
-    return a4.sum()
+    a5=a4.sum()
+    print(f"$$$$$$$$$$${a4}^^^^^^^^^^^{a5}")
+    return a5
 
 def err_rms_log(preds, actual_depth):
     # preds.shape        -> [batch_size, 1, 120, 160]
