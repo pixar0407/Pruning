@@ -68,8 +68,6 @@ def depth_loss(preds, actual_depth):
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를
     d = torch.log(preds) - torch.log(actual_depth) #d.shape 8.1.120.160
-
-    
     grad_loss_term = im_gradient_loss(d, n_pixels)
     term_1 = torch.pow(d.view(-1, n_pixels), 2).mean(dim=1).sum()  # pixel wise mean, then batch sum
     term_2 = (torch.pow(d.view(-1, n_pixels).sum(dim=1), 2) / (2 * (n_pixels ** 2))).sum()
